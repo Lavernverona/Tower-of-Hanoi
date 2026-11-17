@@ -2,6 +2,10 @@
 
 A browser-based Tower of Hanoi game with single-player and local pass-the-mouse multiplayer. Prolog owns the puzzle state and validates every move; the browser only renders server responses and manages the display timer.
 
+## 🎮 Play the Game
+
+**[Click here to play Pink Hanoi](https://tower-of-hanoi-2e5e.onrender.com)**
+
 ## Requirements
 
 - SWI-Prolog **9.0 or newer** (uses the built-in HTTP, JSON, UUID, and list libraries).
