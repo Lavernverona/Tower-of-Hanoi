@@ -19,8 +19,10 @@
 :- http_handler(root(api/ready), api_ready, [method(post)]).
 :- http_handler(root(api/results), api_results, [method(get)]).
 
-start :- http_server(http_dispatch, [port(8080)]),
-         format('Pink Hanoi running at http://localhost:8080/~n', []).
+start :-
+    ( getenv('PORT', PortText) -> atom_number(PortText, Port) ; Port = 8080 ),
+    http_server(http_dispatch, [port(Port), ip(*)]),
+    format('Pink Hanoi running on port ~w~n', [Port]).
 
 run_server :-
     start,
