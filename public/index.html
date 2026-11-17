@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffe3ef">
+  <title>Pink Hanoi — Tower of Hanoi</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="sparkle sparkle-one">✦</div><div class="sparkle sparkle-two">♡</div>
+  <header class="topbar">
+    <a class="brand" href="#" id="brandHome"><span class="brand-mark">♥</span> pink hanoi</a>
+    <span class="top-note">a little puzzle, a lot of sparkle</span>
+    <div class="audio-controls" aria-label="Audio settings">
+      <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false">♫ Music: Off</button>
+      <button class="music-toggle" id="effectsToggle" type="button" aria-pressed="true">♪ Effects: On</button>
+    </div>
+    <audio id="backgroundMusic" src="/medieval_ambient.wav" loop preload="none"></audio>
+  </header>
+
+  <main class="shell">
+    <section id="homeScreen" class="screen active">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">THE CLASSIC PUZZLE, WITH A PINK TWIST</p>
+          <h1>Move with<br><span>grace & strategy.</span></h1>
+          <p class="lead">A sweet little brain workout. Stack every disk on Tower C using the fewest moves you can.</p>
+          <div class="hero-actions">
+            <button class="btn primary" id="singleStart">Play single player <span>→</span></button>
+            <button class="btn secondary" id="multiStart">Play multiplayer <span>♡</span></button>
+          </div>
+          <div class="micro-proof"><span>✿</span> Three towers. One perfect solution. You’ve got this!</div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of three pink Hanoi towers">
+          <div class="art-spark a1">✦</div><div class="art-spark a2">♡</div>
+          <div class="art-tower"><i></i><b class="disk d3"></b><b class="disk d2"></b><b class="disk d1"></b><small>A</small></div>
+          <div class="art-tower"><i></i><small>B</small></div>
+          <div class="art-tower"><i></i><small>C</small></div>
+          <div class="art-caption">think pink <span>✧</span></div>
+        </div>
+      </div>
+      <section class="how-card">
+        <div><p class="eyebrow">HOW TO PLAY</p><h2>Easy rules. Clever moves.</h2></div>
+        <div class="rule-grid">
+          <article><span class="rule-icon">①</span><h3>One at a time</h3><p>Move only the top disk from any tower.</p></article>
+          <article><span class="rule-icon">②</span><h3>Small on big</h3><p>A larger disk can never sit on a smaller one.</p></article>
+          <article><span class="rule-icon">③</span><h3>Reach Tower C</h3><p>Stack every disk on the destination tower to win.</p></article>
+        </div>
+      </section>
+    </section>
+
+    <section id="setupScreen" class="screen narrow">
+      <button class="back-link" id="setupBack">← Back to home</button>
+      <p class="eyebrow" id="setupEyebrow">YOUR SOLO ADVENTURE</p>
+      <h1 id="setupTitle">Let’s get started!</h1>
+      <div class="setup-card">
+        <div id="singleFields">
+          <label for="singleName">Your name</label><input id="singleName" maxlength="24" placeholder="e.g. Barbie" value="Player">
+        </div>
+        <div id="multiFields" class="hidden">
+          <label for="playerCount">Number of players</label>
+          <select id="playerCount"><option value="2">2 players</option><option value="3">3 players</option><option value="4">4 players</option></select>
+          <div id="playerNames" class="name-grid"></div>
+          <label for="basis">Competition basis</label>
+          <select id="basis"><option value="fewest_moves">Fewest moves (tie-break: fastest time)</option><option value="fastest_time">Fastest time (tie-break: fewest moves)</option></select>
+        </div>
+        <label for="difficulty">Choose your difficulty</label>
+        <div class="difficulty-grid" id="difficultyChoices">
+          <button class="difficulty selected" data-level="easy"><strong>Easy</strong><span>3 disks</span><small>7 moves · par</small></button>
+          <button class="difficulty" data-level="hard"><strong>Hard</strong><span>4 disks</span><small>15 moves · par</small></button>
+          <button class="difficulty" data-level="difficult"><strong>Difficult</strong><span>5 disks</span><small>31 moves · par</small></button>
+        </div>
+        <button class="btn primary full" id="createGame">Start game <span>→</span></button>
+        <p class="form-error" id="setupError" role="alert"></p>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="game-heading">
+        <div><p class="eyebrow" id="gameModeLabel">SINGLE PLAYER</p><h1>Make your move<span> ✦</span></h1><p class="subline" id="playerLine"></p></div>
+        <button class="back-link" id="quitGame">Exit game</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><span>Moves</span><strong id="movesValue">0</strong></div>
+        <div class="stat"><span>Minimum (par)</span><strong id="parValue">7</strong></div>
+        <div class="stat"><span>Time</span><strong id="timerValue">00:00</strong></div>
+        <div class="stat"><span>Status</span><strong id="statusValue">Ready</strong></div>
+      </div>
+      <div class="board-card">
+        <div class="board-top"><span>✿ <b id="difficultyLabel">EASY · 3 DISKS</b></span><span class="board-hint" id="boardHint">Click a tower, then choose where to place its top disk.</span></div>
+        <div class="board" id="board">
+          <div class="tower" data-tower="a" aria-label="Tower A"><div class="disk-stack" id="stack-a"></div><div class="pole"></div><div class="base"></div><div class="tower-label">A</div></div>
+          <div class="tower" data-tower="b" aria-label="Tower B"><div class="disk-stack" id="stack-b"></div><div class="pole"></div><div class="base"></div><div class="tower-label">B</div></div>
+          <div class="tower" data-tower="c" aria-label="Tower C"><div class="disk-stack" id="stack-c"></div><div class="pole"></div><div class="base"></div><div class="tower-label">C</div></div>
+        </div>
+        <div class="board-footer"><span id="feedback" aria-live="polite">Choose a tower to begin ♡</span><span class="legend">✦ <span>Small disks on top</span></span></div>
+      </div>
+      <div class="game-controls" id="singleControls">
+        <button class="btn soft" id="undoBtn">↶ Undo</button><button class="btn soft" id="restartBtn">↻ Restart</button>
+        <button class="btn secondary" id="pauseBtn">Ⅱ Pause</button>
+      </div>
+    </section>
+
+    <section id="handoffScreen" class="screen narrow centered">
+      <div class="handoff-heart">♡</div><p class="eyebrow">PLAYER SWITCH</p><h1>Pass the mouse to<br><span id="nextPlayerName">Player 2</span></h1>
+      <p class="lead">Your turn is saved. Let the next player take their place — no peeking at the scores!</p>
+      <button class="btn primary" id="readyBtn">I’m Ready <span>→</span></button>
+    </section>
+
+    <section id="singleResultScreen" class="screen narrow centered">
+      <div class="trophy">✿</div><p class="eyebrow">PUZZLE COMPLETE</p><h1>Beautifully done, <span id="winnerName">Player</span>!</h1>
+      <div class="result-card">
+        <div class="stars" id="starRating">★★★</div><p class="result-caption" id="starCaption">Perfect solution!</p>
+        <div class="result-stats"><div><strong id="resultMoves">7</strong><span>Total moves</span></div><div><strong id="resultTime">00:00</strong><span>Completion time</span></div><div><strong id="resultPar">7</strong><span>Minimum moves</span></div></div>
+      </div>
+      <button class="btn primary" id="playAgain">Play again <span>♡</span></button>
+      <button class="back-link" id="resultHome">Back to home</button>
+    </section>
+
+    <section id="multiResultScreen" class="screen">
+      <div class="centered"><div class="trophy">✧</div><p class="eyebrow">THE MATCH IS OVER</p><h1 id="multiWinnerTitle">The crown goes to…</h1><p class="lead" id="multiWinnerNames"></p></div>
+      <div class="table-card"><h2>Final leaderboard</h2><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Player name</th><th>Total moves</th><th>Completion time</th><th>Result</th></tr></thead><tbody id="rankingRows"></tbody></table></div></div>
+      <div class="centered"><button class="btn primary" id="newMatch">Start another match <span>♡</span></button></div>
+    </section>
+  </main>
+  <div id="pauseOverlay" class="overlay hidden"><div class="modal"><div class="pause-icon">Ⅱ</div><p class="eyebrow">TAKE YOUR TIME</p><h2>Game paused</h2><p>Your timer is stopped. Ready when you are!</p><button class="btn primary full" id="resumeBtn">Resume game</button></div></div>
+  <div id="celebration" class="celebration hidden" aria-hidden="true"></div>
+  <footer>made with <span>♥</span> and a little logic · pink hanoi</footer>
+  <script src="/script.js"></script>
+</body>
+</html>
